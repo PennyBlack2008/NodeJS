@@ -16,7 +16,7 @@
 	<script>
 		document.querySelector('.ajaxsend').addEventListener('click', function(){
 			var inputdata = document.forms[0].elements[0].value;
-			sendAjax('http://localhost:3000/ajax_send_email', inputdata)
+			sendAjax('http://localhost:3000/email/ajax', inputdata)
 		})
 		function sendAjax(url, data){
 			/* 받은 email 을 문자열로 변환 */
