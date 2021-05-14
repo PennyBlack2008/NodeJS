@@ -14,7 +14,12 @@ var connection = mysql.createConnection({
 })
 connection.connect()
 
-/* email 입력 후, 연결 */
+/*
+** from.html 에서 이메일 입력 후, 연결
+1. email 입력 후, submit 하면,
+2. email/form 으로 연결되어
+3. email/form page 를 email.ejs 로 꾸며준다.
+*/
 router.post('/form', function(req, res){
 	console.log(req.body.email)
 	res.render('email.ejs', {'email' : req.body.email})
