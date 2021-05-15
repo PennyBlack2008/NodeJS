@@ -29,7 +29,7 @@ middleware 영역
 */
 /* image 받기 위해 이런식으로 static 처리하였음. */
 app.use(express.static('public'))
-/* bodyParser */
+/* bodyParser 는 GET, POST 를 받아온다 */
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended:true})) // 한글 처리를 위하여
 /* main router 설정 : 다른 파일로 옮겨서 라우팅하려면 이런식으로 해야함 */
