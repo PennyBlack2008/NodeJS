@@ -2,7 +2,7 @@
 var express = require('express')
 var app = express()
 var bodyParser = require('body-parser')
-/* 밑의 4가지 공부를 하기 */
+/* 밑의 4가지 공식홈페이지에서 공부를 하기 */
 var passport = require('passport')
 var LocalStrategy = require('passport-local').Strategy
 var session = require('express-session')
@@ -40,6 +40,15 @@ app.use(bodyParser.urlencoded({extended:true})) // 한글 처리를 위하여
 app.use(router)
 /* ejs template engine set, ejs 말고도 pug, jade 등이 있다. */
 app.set('view engine', 'ejs')
+/* middleware strategy 설정 */
+app.use(session({
+	secret: 'keyboard cat',
+	resave: false,
+	saveUninitialized: true
+}))
+app.use(passport.initialize())
+app.use(passport.session())
+app.use(flash())
 
 /* main.html page 로 연결 / 로 들어오든, /main 으로 들어오든 */
 app.get('/', function(req, res){

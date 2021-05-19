@@ -2,6 +2,8 @@
 var express = require('express')
 var router = express.Router()
 var path = require('path')
+var passport = require('passport')
+var LocalStrategy = require('passport-local').Strategy
 
 /* MySQL 연동 express 페이지에서 mysql 연동 메뉴얼 확인 */
 var mysql = require('mysql')
@@ -18,6 +20,16 @@ router.get('/', function(req, res){
 	console.log('get join url')
 	res.render('join.ejs')
 })
+
+/* 전략 설정 */
+passport.use('local-join', new LocalStrategy({
+  usernameField: 'email',
+  passwordField: 'passwd',
+  passReqToCallback: true
+}, function(req, email, passwd, done) {
+	console.log('local-join callback called')
+}
+))
 
 router.post('/', function(req, res){
 	var body = req.body
