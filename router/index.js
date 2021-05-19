@@ -8,6 +8,7 @@ var path = require('path')
 var main = require('./main/main')
 var email = require('./email/email')
 var join = require('./join/index')
+var login = require('./login/index')
 
 /* url routing */
 router.get('/', function(req, res){
@@ -16,5 +17,6 @@ router.get('/', function(req, res){
 router.use('/main', main) // REVIEW : bodyParser 이후에 위치(처리)해야함. 왜?
 router.use('/email', email) // REVIEW : bodyParser 이후에 위치(처리)해야함. 왜?
 router.use('/join', join) // REVIEW : bodyParser 이후에 위치(처리)해야함. 왜?
+router.use('/login', login)
 
 module.exports = router
