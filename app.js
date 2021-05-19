@@ -7,6 +7,7 @@ var passport = require('passport')
 var LocalStrategy = require('passport-local').Strategy
 var session = require('express-session')
 var flash = require('connect-flash')
+var cors = require('cors')
 
 /* 작성한 router file 불러오기 */
 var router = require('./router/index')
@@ -38,6 +39,7 @@ app.use(express.static('public'))
 app.use(bodyParser.json()) // json 방식일 경우
 app.use(bodyParser.urlencoded({extended:true})) // json 방식이 아닐 경우 url 인코딩, 한글 처리를 위하여
 app.use(flash())
+app.use(cors())
 /* ejs template engine set, ejs 말고도 pug, jade 등이 있다. */
 app.set('view engine', 'ejs')
 /* middleware strategy 설정 */

@@ -44,37 +44,22 @@ passport.use('local-login', new LocalStrategy({
 	var query = connection.query('select * from user where email=?', [email], function(err, rows){
 		if (err) return done(err)
 		if (rows.length) {
-			console.log('existed user')
-			return done(null, false, {message : 'your email is already used'})
+			return done(null, {'email' : email, 'id' : rows[0].UID})
 		} else {
-			var sql = {email : email, pw : passwd}
-			var query = connection.query('INSERT INTO user SET ?', sql, function(err, rows){
-				if (err) throw err
-				return done(null, {'email' : email, 'id' : rows.insertId})
-			})
+			return done(null, false, {'message' : 'your login info is not found >,<'})
 		}
 	})
-}
-))
-
-router.post('/', passport.authenticate('local-join', {
-	/* call back 함수가 구현되어야 한다 */
-	successRedirect: '/main',
-	failureRedirect: '/join',
-	failureFlash: true
 }))
 
-// router.post('/', function(req, res){
-// 	var body = req.body
-// 	var email = body.email
-// 	var name = body.name
-// 	var passwd = body.passwd
-
-// 	var sql = {email : email, name : name, pw : passwd}
-// 	var query = connection.query('INSERT INTO user set ?', sql, function(err, rows){
-// 		if (err) throw err
-// 		else res.render('welcome.ejs', {'name' : name, 'id' : rows.insertId})
-// 	})
-// })
+router.post('/', function(req, res, next){
+	passport.authenticate('local-login', function(err, user, info){
+		if (err) res.status(500).json(err) // 500 error
+		if (!user) { return res.status(401).json(info.message)}
+		req.logIn(user, function(err){
+			if (err) { return next(err) }
+			return res.json(user)
+		})
+	})(req, res, next)
+})
 
 module.exports = router // 다른 파일에서도 이 router 설정을 쓸 수 있게 된다.(다른 router 와 중복 가능)

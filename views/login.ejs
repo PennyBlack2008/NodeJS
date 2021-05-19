@@ -17,11 +17,10 @@
 		document.querySelector('.ajaxsend').addEventListener('click', function(){
 			var email = document.getElementsByName('email')[0].value
 			var password = document.getElementsByName('passwd')[0].value
-			sendAjax('http://localhost:3000/email/ajax', {'email' : email, 'password' : password})
+			sendAjax('http://localhost:3000/login', {'email' : email, 'passwd' : password}) // 왼쪽은 설정, 오른쪽은 쿼리 설정
 		})
 		function sendAjax(url, data){
 			/* 받은 email 을 문자열로 변환 */
-			var data = {'email' : data}
 			data = JSON.stringify(data) // JSON 문자열로 변환
 
 			var xhr = new XMLHttpRequest()
@@ -31,8 +30,8 @@
 			xhr.addEventListener('load', function(){
 				var result = JSON.parse(xhr.responseText)
 				var resultDiv = document.querySelector(".result");
-				if (result.result !== "ok") resultDiv.innerHTML = "your email is not found"
-				else resultDiv.innerHTML = result.name
+				if (result.email) resultDiv.innerHTML = "welcome, " + result.email + "!!"
+				else resultDiv.innerHTML = result
 			})
 		}
 	</script>
