@@ -2,7 +2,11 @@
 var express = require('express')
 var app = express()
 var bodyParser = require('body-parser')
-
+/* 밑의 4가지 공부를 하기 */
+var passport = require('passport')
+var LocalStrategy = require('passport-local').Strategy
+var session = require('express-session')
+var flash = require('connect-flash')
 
 /* 작성한 router file 불러오기 */
 var router = require('./router/index')
