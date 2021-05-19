@@ -19,13 +19,22 @@ connection.connect()
 
 router.get('/', function(req, res){
 	var msg
-	var errMsg = req.flash('error')
+	var errMsg = req.flash('error') // 에러나면, app.js 의 app.use(router) 를 가장 나중에 실행하도록 조정
 	if (errMsg) msg = errMsg
 	res.render('join.ejs', {'message' : msg})
 })
 
 /* 전략 설정 */
-// passport.serialize
+// passport.serialize 에서는 passport.use 의 call back 함수의 done 을 받아 쓸 수 있다.
+passport.serializeUser(function(user, done){
+	console.log('passport session save : ', user.id)
+	done(null, user.id)
+})
+// session id 를 뽑아 DB 조회 후 페이지에 전달
+passport.deserializeUser(function(id, done){
+	console.log('passport session get id : ', id)
+	done(null, id)
+})
 
 passport.use('local-join', new LocalStrategy({
   usernameField: 'email',
