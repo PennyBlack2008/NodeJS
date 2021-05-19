@@ -1,5 +1,6 @@
 /* npm install */
 var express = require('express')
+var app = express()
 var router = express.Router()
 var path = require('path')
 var passport = require('passport')
@@ -17,17 +18,33 @@ var connection = mysql.createConnection({
 connection.connect()
 
 router.get('/', function(req, res){
-	console.log('get join url')
-	res.render('join.ejs')
+	var msg
+	var errMsg = req.flash('error')
+	if (errMsg) msg = errMsg
+	res.render('join.ejs', {'message' : msg})
 })
 
 /* 전략 설정 */
+// passport.serialize
+
 passport.use('local-join', new LocalStrategy({
   usernameField: 'email',
   passwordField: 'passwd',
   passReqToCallback: true
-}, function(req, email, passwd, done) {
-	console.log('local-join callback called')
+}, function(req, email, passwd, done) { // done 은 serialize 메소드 실행해줄 것을 찾음
+	var query = connection.query('select * from user where email=?', [email], function(err, rows){
+		if (err) return done(err)
+		if (rows.length) {
+			console.log('existed user')
+			return done(null, false, {message : 'your email is already used'})
+		} else {
+			var sql = {email : email, pw : passwd}
+			var query = connection.query('INSERT INTO user SET ?', sql, function(err, rows){
+				if (err) throw err
+				return done(null, {'email' : email, 'id' : rows.insertId})
+			})
+		}
+	})
 }
 ))
 

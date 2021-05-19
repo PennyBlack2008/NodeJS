@@ -22,7 +22,7 @@ connection.connect()
 */
 router.post('/form', function(req, res){
 	console.log(req.body.email)
-	res.render('emailw.ejs', {'email' : req.body.email})
+	res.render('email.ejs', {'email' : req.body.email})
 })
 router.post('/ajax', function(req, res){
 	var email = req.body.email;

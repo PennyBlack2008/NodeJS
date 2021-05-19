@@ -22,6 +22,7 @@ var connection = mysql.createConnection({
 })
 connection.connect()
 
+
 /* 비동기로 동작 */
 app.listen(3000, function(){
 	console.log("start! express server on port 3000")
@@ -36,8 +37,7 @@ app.use(express.static('public'))
 /* bodyParser 는 GET, POST 를 받아온다 */
 app.use(bodyParser.json()) // json 방식일 경우
 app.use(bodyParser.urlencoded({extended:true})) // json 방식이 아닐 경우 url 인코딩, 한글 처리를 위하여
-/* main router 설정 : 다른 파일로 옮겨서 라우팅하려면 이런식으로 해야함 */
-app.use(router)
+app.use(flash())
 /* ejs template engine set, ejs 말고도 pug, jade 등이 있다. */
 app.set('view engine', 'ejs')
 /* middleware strategy 설정 */
@@ -48,7 +48,8 @@ app.use(session({
 }))
 app.use(passport.initialize())
 app.use(passport.session())
-app.use(flash())
+/* main router 설정 : 다른 파일로 옮겨서 라우팅하려면 이런식으로 해야함 */
+app.use(router)
 
 /* main.html page 로 연결 / 로 들어오든, /main 으로 들어오든 */
 app.get('/', function(req, res){
